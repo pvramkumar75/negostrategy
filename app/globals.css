@@ -136,7 +136,7 @@ h1, h2, h3 { font-family: var(--display); font-weight: 560; letter-spacing: -0.0
   width: 100%;
   appearance: none;
   border: 1.5px solid var(--line);
-  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%2314804a' d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 14px center;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23e11f22' d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 14px center;
   border-radius: 16px;
   padding: 16px 42px 16px 16px;
   font-size: 16px;
@@ -277,3 +277,10 @@ button, .opt, .select, .input { min-height: 44px; touch-action: manipulation; }
 @media (min-width: 1100px) {
   .app.wide { width: min(1200px, calc(100% - 64px)); }
 }
+
+.addtype { margin-top: 14px; padding: 12px; background: #f7f7f7; border-radius: 16px; }
+.addtype .plain { margin: 0 0 8px; }
+.addrow { display: flex; gap: 8px; }
+.addrow .input { flex: 1; min-width: 0; }
+.addrow .secondary { width: auto; margin: 0; padding-inline: 18px; }
+.addtype .text-btn { margin-top: 8px; }

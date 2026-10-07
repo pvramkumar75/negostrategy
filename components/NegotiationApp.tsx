@@ -6,13 +6,14 @@ import Results from "./Results";
 import { aiIsOn, providerMeta } from "../lib/ai-config";
 import { BRAND } from "../lib/brand";
 import { analyse } from "../lib/engine";
-import { buildQuestions, questionLabel } from "../lib/questions";
+import { SLUG, buildQuestions, questionLabel, type CustomTypes } from "../lib/questions";
 import type { AiConfig, Answers } from "../lib/types";
 
 const ANSWER_KEY = "thermo-dealdesk-answers";
 const AI_KEY = "thermo-dealdesk-ai";
 const SAVED_KEY = "thermo-dealdesk-saved";
 const INFO_KEY = "thermo-dealdesk-info";
+const CUSTOM_KEY = "thermo-dealdesk-custom-types";
 
 const emptyAi: AiConfig = { provider: "", apiKey: "", model: "" };
 
@@ -42,6 +43,8 @@ export default function NegotiationApp() {
   const [info, setInfo] = useState<Info>({ supplier: "", item: "" });
   const [saved, setSaved] = useState<SavedPlan[]>([]);
   const [index, setIndex] = useState(0);
+  const [custom, setCustom] = useState<CustomTypes>({});
+  const [newType, setNewType] = useState("");
   const [ai, setAi] = useState<AiConfig>(emptyAi);
   const [settings, setSettings] = useState(false);
   const [ready, setReady] = useState(false);
@@ -51,6 +54,7 @@ export default function NegotiationApp() {
     setAnswers(load<Answers>(ANSWER_KEY, {}));
     setInfo(load<Info>(INFO_KEY, { supplier: "", item: "" }));
     setAi(load<AiConfig>(AI_KEY, emptyAi));
+    setCustom(load<CustomTypes>(CUSTOM_KEY, {}));
     try {
       const raw = localStorage.getItem(SAVED_KEY);
       if (raw) setSaved(JSON.parse(raw));
@@ -72,8 +76,11 @@ export default function NegotiationApp() {
   useEffect(() => {
     if (ready) store(SAVED_KEY, saved);
   }, [saved, ready]);
+  useEffect(() => {
+    if (ready) store(CUSTOM_KEY, custom);
+  }, [custom, ready]);
 
-  const questions = useMemo(() => buildQuestions(answers), [answers]);
+  const questions = useMemo(() => buildQuestions(answers, custom), [answers, custom]);
   const question = questions[index];
   const strategy = useMemo(() => (screen === "result" ? analyse(answers) : null), [screen, answers]);
   const brief = useMemo(
@@ -106,6 +113,28 @@ export default function NegotiationApp() {
       if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
       advanceTimer.current = window.setTimeout(next, 180);
     }
+  }
+
+  function addType() {
+    const label = newType.trim().replace(/\s+/g, " ").slice(0, 60);
+    if (!label || !SLUG(label) || !question) return;
+    const key = answers.category || "other";
+    setCustom((c) => ((c[key] || []).includes(label) ? c : { ...c, [key]: [...(c[key] || []), label] }));
+    setAnswers((prev) => ({ ...prev, [question.id]: SLUG(label) }));
+    setNewType("");
+  }
+
+  function removeType() {
+    if (!question) return;
+    const key = answers.category || "other";
+    const label = (custom[key] || []).find((c) => SLUG(c) === answers.subcategory);
+    if (!label) return;
+    setCustom((c) => ({ ...c, [key]: (c[key] || []).filter((x) => x !== label) }));
+    setAnswers((prev) => {
+      const next = { ...prev };
+      delete next.subcategory;
+      return next;
+    });
   }
 
   function continueDropdown() {
@@ -229,6 +258,18 @@ export default function NegotiationApp() {
                   <option key={option.id} value={option.id}>{option.label}</option>
                 ))}
               </select>
+              {question.id === "subcategory" && (
+                <div className="addtype">
+                  <p className="plain">Cannot find your material? Type it below and add it. It will be saved in this list for next time.</p>
+                  <div className="addrow">
+                    <input className="input" placeholder="e.g. Copper wire, Silicone sheet" value={newType} maxLength={60} onChange={(e) => setNewType(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") addType(); }} />
+                    <button className="secondary" type="button" disabled={!newType.trim()} onClick={addType}>Add</button>
+                  </div>
+                  {(custom[answers.category || "other"] || []).some((c) => SLUG(c) === answers.subcategory) && (
+                    <button className="text-btn" type="button" onClick={removeType}>Remove “{questions[index].options.find((o) => o.id === answers.subcategory)?.label}” from my list</button>
+                  )}
+                </div>
+              )}
               <button className="primary" type="button" disabled={!answers[question.id]} onClick={continueDropdown}>Continue</button>
             </>
           )}

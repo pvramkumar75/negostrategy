@@ -14,9 +14,14 @@ export type Question = {
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-export function buildQuestions(answers: Answers): Question[] {
+export type CustomTypes = Record<string, string[]>;
+
+export const SLUG = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Question[] {
   const cat = categories.categories.find((c) => c.id === answers.category);
-  const subs = cat && cat.subcategories.length ? cat.subcategories : ["General", "Mixed basket", "Not listed"];
+  const base = cat && cat.subcategories.length ? cat.subcategories : ["General", "Mixed basket", "Not listed"];
+  const subs = [...base, ...(custom[answers.category || "other"] || []).filter((c) => !base.includes(c))];
 
   const goals: QOption[] = [
     { id: "price", label: "Lower price", hint: "Get closer to your target price", icon: "₹" },
