@@ -2,8 +2,10 @@ import type { Answers, Stance, Strategy } from "./types";
 
 const clamp = (n: number) => Math.max(4, Math.min(96, Math.round(n)));
 
+export const picks = (v?: string) => (v ? v.split(",").filter(Boolean) : []);
+
 function has(a: Answers, id: string, value: string) {
-  return a[id] === value;
+  return picks(a[id]).includes(value);
 }
 
 export function analyse(a: Answers): Strategy {
@@ -142,7 +144,14 @@ export function analyse(a: Answers): Strategy {
   };
 }
 
-function aim(id?: string) {
+function aim(ids?: string) {
+  const list = picks(ids).map(aimOne);
+  if (!list.length) return "a workable package";
+  if (list.length === 1) return list[0];
+  return list.slice(0, -1).join(", ") + " and " + list[list.length - 1];
+}
+
+function aimOne(id?: string) {
   const map: Record<string, string> = {
     price: "a lower price",
     payment: "better payment",
@@ -485,7 +494,8 @@ const REPLIES: { id: string; they: string; you: string }[] = [
 ];
 
 function buildReplies(selected?: string): Strategy["replies"] {
-  const list = REPLIES.map((r) => ({ ...r, pinned: r.id === selected }));
+  const chosen = picks(selected);
+  const list = REPLIES.map((r) => ({ ...r, pinned: chosen.includes(r.id) && r.id !== "none" }));
   return list.sort((x, y) => Number(y.pinned) - Number(x.pinned));
 }
 

@@ -231,6 +231,7 @@ export default function Results({
             <b>{strategy.leverage}</b>
           </div>
           <small style={{ display: "block", marginTop: 6, fontWeight: 700 }}>Your strength</small>
+          <small style={{ display: "block", maxWidth: 120, opacity: .8 }}>Out of 100. Above 65 you are strong. Below 40 the supplier is stronger.</small>
         </div>
       </section>
       <div className="split" style={{ marginTop: 14 }}>

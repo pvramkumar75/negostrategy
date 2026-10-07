@@ -284,3 +284,6 @@ button, .opt, .select, .input { min-height: 44px; touch-action: manipulation; }
 .addrow .input { flex: 1; min-width: 0; }
 .addrow .secondary { width: auto; margin: 0; padding-inline: 18px; }
 .addtype .text-btn { margin-top: 8px; }
+
+.nav .skip { margin-left: auto; background: transparent; color: var(--muted); }
+.opts .primary { margin-top: 6px; }

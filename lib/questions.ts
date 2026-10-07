@@ -8,7 +8,8 @@ export type Question = {
   kicker: string;
   title: string;
   subtitle: string;
-  kind: "cards" | "dropdown";
+  kind: "cards" | "dropdown" | "multi";
+  why?: string;
   options: QOption[];
 };
 
@@ -79,6 +80,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Importance",
       title: "How big is the impact if this goes wrong?",
       subtitle: "Think about the effect on your profit and how easy it is to change supplier.",
+      why: "Think of your plant: if this item stops or becomes costly, how badly are you affected? Pick the closest.",
       kind: "cards",
       options: [
         { id: "routine", label: "Routine", hint: "Small impact, easy to change supplier", icon: "○" },
@@ -134,6 +136,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "The quote",
       title: "How far is the quote from your target?",
       subtitle: "Your target is the price you would be happy to sign. It is not your first offer.",
+      why: "Gap = how much lower than their quote your target price is. Example: quote ₹100, target ₹92 means the gap is 8%.",
       kind: "cards",
       options: [
         { id: "tiny", label: "Within 2%", hint: "Almost there. Other terms may matter more", icon: "1" },
@@ -149,6 +152,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "The quote",
       title: "What is the lowest price you think they can accept?",
       subtitle: "A guess is fine. Just be honest that it is a guess.",
+      why: "Their lowest price is the least they would accept. You rarely know it, so a guess is fine.",
       kind: "cards",
       options: [
         { id: "well-below", label: "Much lower than the quote", hint: "You have seen lower prices, or your cost estimate says so", icon: "↓" },
@@ -162,6 +166,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Your limit",
       title: "If they do not reduce, can you walk away?",
       subtitle: "Be honest. If you cannot really walk away, do not pretend.",
+      why: "Walking away means you refuse the offer and buy from someone else, or wait. It only works if you really can.",
       kind: "cards",
       options: [
         { id: "comfortable", label: "Yes, comfortably", hint: "You have another real option", icon: "✓" },
@@ -188,6 +193,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Competition",
       title: "Is another supplier ready?",
       subtitle: "A quote you can really use is much stronger than a supplier you plan to develop later.",
+      why: "This is your backup. The stronger it is, the better your position in the meeting.",
       kind: "cards",
       options: [
         { id: "quoted", label: "Yes, with a quote I can use", hint: "You could place the order", icon: "✓" },
@@ -201,6 +207,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Competition",
       title: "How hard is it to change supplier?",
       subtitle: "Think about tools, approvals, trials, training and the risk of a bad first lot.",
+      why: "Think about how much time, cost and effort it takes to start buying from someone else.",
       kind: "cards",
       options: [
         { id: "easy", label: "Easy", hint: "A few weeks", icon: "→" },
@@ -214,6 +221,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "The supplier",
       title: "What kind of supplier is this?",
       subtitle: "A trader, a maker and a sole-source brand react differently.",
+      why: "A trader resells goods made by others. A manufacturer makes them. An OEM sells its own branded or special product.",
       kind: "cards",
       options: [
         { id: "many", label: "One of many makers", hint: "Many others can make it", icon: "▦" },
@@ -240,6 +248,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "The market",
       title: "How should the price change after you sign?",
       subtitle: "A named index is better than “raw material has increased”.",
+      why: "An index is a published price, for example for steel or polymer. Linking your price to it avoids random price hikes.",
       kind: "cards",
       options: [
         { id: "fixed", label: "Fixed for the whole contract", hint: "They take the market risk", icon: "▬" },
@@ -266,6 +275,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Volume",
       title: "What commitment can you sign?",
       subtitle: "A firm commitment should get a better price. A forecast is not a promise.",
+      why: "Slab pricing means the price falls as you buy more. A forecast is only an estimate. It does not bind you.",
       kind: "cards",
       options: [
         { id: "firm", label: "Fixed yearly quantity", hint: "You can write a quantity in the contract", icon: "✓" },
@@ -295,6 +305,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Cash",
       title: "What payment move can you trade?",
       subtitle: "Change payment days only if you get something clear in return.",
+      why: "Paying faster helps the supplier. Ask for a discount or priority in return.",
       kind: "cards",
       options: [
         { id: "faster", label: "I can pay faster", hint: "Use it to get a lower price or priority", icon: "⚡" },
@@ -347,6 +358,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Risk",
       title: "Can the specification move?",
       subtitle: "A small change in specification can save more than hours of price talk.",
+      why: "Specification means the technical details of what you buy: grade, size, tolerance, packing.",
       kind: "cards",
       options: [
         { id: "fixed", label: "Fixed. Cannot change", hint: "Customer, drawing or rule", icon: "▬" },
@@ -360,6 +372,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Supply",
       title: "Is the minimum order a problem?",
       subtitle: "Minimum order (MOQ), part deliveries and your store space go together.",
+      why: "MOQ means minimum order quantity: the smallest quantity the supplier will sell.",
       kind: "cards",
       options: [
         { id: "high", label: "MOQ is too high", hint: "Money and space are stuck in stock", icon: "↑" },
@@ -373,6 +386,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Landed cost",
       title: "Who should pay the freight?",
       subtitle: "Compare the final cost at your plant. A cheap ex-works price can become costly after freight.",
+      why: "Freight is the transport cost. The best price is the one that is lowest after freight and tax.",
       kind: "dropdown",
       options: [
         { id: "for", label: "Delivered to our plant (FOR)" },
@@ -387,6 +401,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Ownership",
       title: "Who owns the tools, dies or licences?",
       subtitle: "If they own the tool, changing supplier becomes hard.",
+      why: "Tools are the moulds, dies or fixtures made for your parts. Whoever owns them has an advantage.",
       kind: "cards",
       options: [
         { id: "buyer", label: "We own the tool or licence", hint: "You can take it elsewhere", icon: "✓" },
@@ -399,8 +414,8 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       id: "warranty",
       kicker: "Service",
       title: "What support do you need after delivery?",
-      subtitle: "Warranty, service and spares are also part of the price.",
-      kind: "cards",
+      subtitle: "Select all that you need.",
+      kind: "multi",
       options: [
         { id: "standard", label: "Normal warranty is enough", hint: "Do not pay for cover you will not use", icon: "○" },
         { id: "extended", label: "I want longer warranty", hint: "Get it in return for price", icon: "＋" },
@@ -466,8 +481,8 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       id: "compliance",
       kicker: "Constraints",
       title: "Which constraint is real here?",
-      subtitle: "Pick only a rule your company really follows for this purchase.",
-      kind: "cards",
+      subtitle: "Select all that apply. Pick only rules your company really follows.",
+      kind: "multi",
       options: [
         { id: "none", label: "No special constraint", hint: "Commercial decision", icon: "○" },
         { id: "iso", label: "Quality certificate is compulsory", hint: "ISO, IATF, or customer approval", icon: "✓" },
@@ -481,6 +496,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "The cost",
       title: "Which cost will you negotiate on?",
       subtitle: "Unit price alone hides freight, duty, rejects, stock cost and downtime.",
+      why: "Choose Final cost at plant if freight, duty or handling are a big part of the price.",
       kind: "cards",
       options: [
         { id: "unit", label: "Unit price", hint: "Same item, same delivery, same terms", icon: "₹" },
@@ -493,6 +509,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Your authority",
       title: "Who can approve the deal?",
       subtitle: "Do not offer something you still need approval for.",
+      why: "This decides whether you can agree during the meeting, or must say you will check with your manager.",
       kind: "cards",
       options: [
         { id: "self", label: "I can close within my limit", hint: "You can agree during the meeting", icon: "✓" },
@@ -503,25 +520,25 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
     {
       id: "goal",
       kicker: "Your aim",
-      title: "What do you most want from this meeting?",
-      subtitle: "One main aim keeps the talk focused.",
-      kind: "cards",
+      title: "What do you want from this meeting?",
+      subtitle: "You can select more than one. Select all that matter.",
+      kind: "multi",
       options: goals,
     },
     {
       id: "alsoWant",
       kicker: "Your aim",
       title: "What else must not become worse?",
-      subtitle: "You can give on small things. Do not lose this one by mistake.",
-      kind: "cards",
-      options: goals.filter((g) => g.id !== answers.goal),
+      subtitle: "Select every point that must not become worse. You can give on small things.",
+      kind: "multi",
+      options: goals.filter((g) => !(answers.goal || "").split(",").includes(g.id)).length ? goals.filter((g) => !(answers.goal || "").split(",").includes(g.id)) : goals,
     },
     {
       id: "theySaid",
       kicker: "Their words",
       title: "What do you expect them to say?",
-      subtitle: "Pick what you expect to hear. The plan gives you a reply.",
-      kind: "cards",
+      subtitle: "Select all the things you expect to hear. The plan gives you a reply for each.",
+      kind: "multi",
       options: [
         { id: "none", label: "Nothing yet", hint: "You are preparing for the first talk", icon: "○" },
         { id: "final", label: "This is our final price", hint: "A common closing line", icon: "■" },
@@ -551,6 +568,7 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
       kicker: "Your preparation",
       title: "How well do you know the cost?",
       subtitle: "Cost estimate, another quote or last price. A feeling is not a number.",
+      why: "A cost estimate means you worked out what the item should cost: material + making cost + profit.",
       kind: "cards",
       options: [
         { id: "should", label: "I have a cost estimate", hint: "Material + making cost + overheads", icon: "∑" },
@@ -564,5 +582,9 @@ export function buildQuestions(answers: Answers, custom: CustomTypes = {}): Ques
 
 export function questionLabel(questions: Question[], id: string, optionId: string) {
   const q = questions.find((item) => item.id === id);
-  return q?.options.find((o) => o.id === optionId)?.label ?? optionId;
+  return optionId
+    .split(",")
+    .filter(Boolean)
+    .map((one) => q?.options.find((o) => o.id === one)?.label ?? one)
+    .join("; ");
 }

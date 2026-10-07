@@ -101,12 +101,29 @@ export default function NegotiationApp() {
     });
   }
 
+  function toggle(optionId: string) {
+    if (!question) return;
+    setAnswers((prev) => {
+      let list = (prev[question.id] || "").split(",").filter(Boolean);
+      const exclusive = optionId === "none"; // "none" cannot be mixed with other answers
+      if (list.includes(optionId)) list = list.filter((x) => x !== optionId);
+      else list = exclusive ? [optionId] : [...list.filter((x) => x !== "none"), optionId];
+      const nextAnswers = { ...prev, [question.id]: list.join(",") };
+      if (!list.length) delete nextAnswers[question.id];
+      if (question.id === "goal" && nextAnswers.alsoWant) {
+        const rest = nextAnswers.alsoWant.split(",").filter((x) => !list.includes(x));
+        if (rest.length) nextAnswers.alsoWant = rest.join(",");
+        else delete nextAnswers.alsoWant;
+      }
+      return nextAnswers;
+    });
+  }
+
   function choose(optionId: string) {
     if (!question) return;
     setAnswers((prev) => {
       const nextAnswers = { ...prev, [question.id]: optionId };
       if (question.id === "category") delete nextAnswers.subcategory;
-      if (question.id === "goal" && nextAnswers.alsoWant === optionId) delete nextAnswers.alsoWant;
       return nextAnswers;
     });
     if (question.kind === "cards") {
@@ -139,6 +156,16 @@ export default function NegotiationApp() {
 
   function continueDropdown() {
     if (question && answers[question.id]) next();
+  }
+
+  function skip() {
+    if (!question) return;
+    setAnswers((prev) => {
+      const nextAnswers = { ...prev };
+      delete nextAnswers[question.id];
+      return nextAnswers;
+    });
+    next();
   }
 
   function saveAi(nextAi: AiConfig) {
@@ -237,8 +264,23 @@ export default function NegotiationApp() {
           )}
           <h2>{question.title}</h2>
           <p className="lede">{question.subtitle}</p>
+          {question.why && <p className="hint-box" style={{ marginTop: 12 }}><b>Help: </b>{question.why}</p>}
           <div style={{ height: 14 }} />
-          {question.kind === "cards" ? (
+          {question.kind === "multi" && (
+            <div className="opts">
+              {question.options.map((option) => {
+                const selected = (answers[question.id] || "").split(",").includes(option.id);
+                return (
+                  <button key={option.id} type="button" role="checkbox" aria-checked={selected} className={selected ? "opt on" : "opt"} onClick={() => toggle(option.id)}>
+                    <span className="badge-ico">{selected ? "✓" : option.icon || "•"}</span>
+                    <span><strong>{option.label}</strong>{option.hint && <small>{option.hint}</small>}</span>
+                  </button>
+                );
+              })}
+              <button className="primary" type="button" disabled={!answers[question.id]} onClick={next}>Continue</button>
+            </div>
+          )}
+          {question.kind === "multi" ? null : question.kind === "cards" ? (
             <div className="opts">
               {question.options.map((option) => {
                 const selected = answers[question.id] === option.id;
@@ -286,6 +328,7 @@ export default function NegotiationApp() {
             {answers[question.id] && question.kind === "cards" && (
               <button className="secondary" type="button" onClick={next}>Next</button>
             )}
+            <button className="secondary skip" type="button" onClick={skip}>Skip</button>
           </div>
         </section>
       )}
