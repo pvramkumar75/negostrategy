@@ -1,0 +1,101 @@
+{
+  "categories": [
+    {
+      "id": "raw-materials",
+      "name": "Raw Materials",
+      "subcategories": [
+        "Polymers",
+        "Metals",
+        "Chemicals",
+        "Rubber",
+        "Tapes & Foils",
+        "Packaging"
+      ]
+    },
+    {
+      "id": "oem-supplies",
+      "name": "OEM / Manufacturer Supplies",
+      "subcategories": [
+        "Electrical",
+        "Mechanical",
+        "Electronic",
+        "Proprietary Parts"
+      ]
+    },
+    {
+      "id": "capex",
+      "name": "Capex",
+      "subcategories": [
+        "Machinery",
+        "Plant & Equipment",
+        "Tooling",
+        "Projects"
+      ]
+    },
+    {
+      "id": "mro",
+      "name": "Maintenance / MRO",
+      "subcategories": [
+        "Mechanical",
+        "Electrical",
+        "Instrumentation",
+        "Spares"
+      ]
+    },
+    {
+      "id": "services",
+      "name": "Services",
+      "subcategories": [
+        "AMC",
+        "Job Work",
+        "Consultancy",
+        "Manpower",
+        "Logistics"
+      ]
+    },
+    {
+      "id": "general",
+      "name": "General / Indirect",
+      "subcategories": [
+        "Stationery",
+        "Housekeeping",
+        "Safety",
+        "Office Supplies",
+        "Consumables"
+      ]
+    },
+    {
+      "id": "vehicles",
+      "name": "Vehicles & Transportation",
+      "subcategories": [
+        "Vehicles",
+        "Fleet",
+        "Transport"
+      ]
+    },
+    {
+      "id": "it",
+      "name": "IT / Software",
+      "subcategories": [
+        "Hardware",
+        "Software",
+        "SaaS",
+        "Support"
+      ]
+    },
+    {
+      "id": "construction",
+      "name": "Construction / Projects",
+      "subcategories": [
+        "Civil",
+        "Electrical",
+        "MEP"
+      ]
+    },
+    {
+      "id": "other",
+      "name": "Other",
+      "subcategories": []
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "statement": "This is our final price.",
+    "responses": [
+      "Final price?",
+      "What would have to change for us to reach a workable price?",
+      "If price cannot move, what can we improve on MOQ, payment, delivery or price protection?"
+    ]
+  },
+  {
+    "statement": "Raw material prices have increased.",
+    "responses": [
+      "Which raw material or index has changed?",
+      "What is the actual impact per unit?",
+      "Can we use an agreed index-linked formula instead of a blanket increase?"
+    ]
+  },
+  {
+    "statement": "We cannot reduce MOQ.",
+    "responses": [
+      "How can we use call-off quantities and scheduled deliveries to protect your production economics while controlling our inventory?"
+    ]
+  },
+  {
+    "statement": "Our margin is already very low.",
+    "responses": [
+      "What can we change in volume, payment, specification or delivery to improve the total economics for both sides?"
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "editable": true,
+  "concession_policy": {
+    "require_get": true,
+    "max_unreciprocated_concessions": 0
+  },
+  "leverage_weights": {
+    "competition": 25,
+    "alternate_source": 20,
+    "volume": 15,
+    "payment": 10,
+    "time": 10,
+    "switching_cost": -15,
+    "urgency": -15
+  },
+  "risk_weights": {
+    "quality": 30,
+    "continuity": 30,
+    "dependency": 20,
+    "commercial": 20
+  },
+  "thresholds": {
+    "strong_batna_suppliers": 3,
+    "high_urgency": 8,
+    "high_switching_cost": 8
+  }
+}
